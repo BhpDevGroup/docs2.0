@@ -1,11 +1,11 @@
 Tenermint节点搭建按照系统可分为windows和linux方式。
-##Windows方式搭建
-###工具和环境
+## Windows方式搭建
+### 工具和环境
 - Windows10系统
 - GIt Bash
-###搭建说明
+### 搭建说明
 本次搭建基于测试环境，在一台电脑上直接进行多个节点搭建；正式环境请使用多台服务器组合搭建。
-###搭建步骤
+### 搭建步骤
 1. 进入发行版页面下载最新win版执行文件
 [https://github.com/tendermint/tendermint/releases](https://github.com/tendermint/tendermint/releases)
 
@@ -111,7 +111,7 @@ tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_pe
 8. 四个节点搭建成功，成功截图如下方动图所示
 
 ![11.gif](./images/ncot-9.gif)
-###Linux方式搭建
+### Linux方式搭建
 1. 在home目录新建`testnode`文件夹
 ```
 mkdir testnode
@@ -532,7 +532,7 @@ tail -f init003.log
 ![image.png](./images/ncot-12.png)
 
 
-##参考文档
+## 参考文档
 [https://docs.tendermint.com/master/introduction/quick-start.html](https://docs.tendermint.com/master/introduction/quick-start.html)
 
 
