@@ -75,7 +75,8 @@ make build
 nohup ./init.sh > init.log &
 ```
 - 手动初始化
-首先创建用于签署创始交易的密钥：(代码中的mykey替换成自己定义的字段)
+
+首先创建用于签署创始交易的密钥：(代码中的mykey替换成自己定义的字段,比如换成：bhptest2)
 ```
 emintd init mymoniker --chain-id 8
 emintcli config chain-id 8
@@ -161,4 +162,13 @@ make test
 2. 客户端工具测试（暂无）
 ```
 make test-cli
+```
+### 节点部署
+
+```
+emintd start --p2p.persistent_peers="f5088aa26cf82be7657977603d5a8f9f9cfae267@127.0.0.1:26606,ddb4df78fe5bdf120e8ba9468857765756948e18@127.0.0.1:26616,6bb7f6e1ef06ab114708e421ec84352f5f203e21@127.0.0.1:26626,13db9b7388f2192bd65ded3cdf1216ad7e17e6db@127.0.0.1:26636"
+```
+获取nodeid
+```
+emintd tendermint show-node-id
 ```
