@@ -163,12 +163,8 @@ make test
 ```
 make test-cli
 ```
-### 节点部署
+### 节点集群
 
-```
-emintd start --p2p.persistent_peers="f5088aa26cf82be7657977603d5a8f9f9cfae267@127.0.0.1:26606,ddb4df78fe5bdf120e8ba9468857765756948e18@127.0.0.1:26616,6bb7f6e1ef06ab114708e421ec84352f5f203e21@127.0.0.1:26626,13db9b7388f2192bd65ded3cdf1216ad7e17e6db@127.0.0.1:26636"
-```
-获取nodeid
-```
-emintd tendermint show-node-id
-```
+[节点集群部署](node-cluster-of-ethermint.md)
+
+
