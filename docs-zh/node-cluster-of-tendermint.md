@@ -130,12 +130,12 @@ tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_pe
 mkdir testnode
 ```
 2. 在testnode目录下新建四个文件夹，分别为000、001、002、003文件夹。
-···
+```shell script
 mkdir 000
 mkdir 001
 mkdir 002
 mkdir 003
-···
+```
 3.  进入`000`目录下，执行以下命令生成四个节点配置文件
 ```
 ./tendermint testnet
@@ -192,6 +192,7 @@ nohup tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persist
 tail -f init003.log
 ```
 8. 四个节点搭建成功，成功截图如下方动图所示
+
 ![image.png](./images/ncot-12.png)
 
 
