@@ -1,13 +1,13 @@
-##Ethermint节点集群
+## Ethermint节点集群
 Ethermint可选用手动初始化搭建多节点
 
 删除现有的守护程序`.emintd`和客户端`.emintcli`
 ```
 rm -rf ~/.emint*
 ```
-设置Ethermint的网络别名和chain-id
+设置Ethermint的网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
 ```
-emintd init mymoniker --chain-id 8
+emintd init node0 --chain-id 8
 ```
 参数设置
 ```
@@ -49,4 +49,79 @@ emintd start --p2p.persistent_peers="f5088aa26cf82be7657977603d5a8f9f9cfae267@12
 ```
 emintd start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
 ```
+复制
+```shell script
+cp -r /root/.emintd /home/testnode/000/
+cp -r /root/.emintcli /home/testnode/000/
+```
 
+第一个节点
+```
+rm -rf ~/.emint*
+./emintd init node0 --chain-id 8
+./emintcli config chain-id 8
+./emintcli config output json
+./emintcli config indent true
+./emintcli config trust-node true
+./emintcli config keyring-backend test
+./emintcli keys add bhptest0
+
+./emintd add-genesis-account $(emintcli keys show bhptest0 -a) 1000000000000000000photon,1000000000000000000stake
+./emintd gentx --name bhptest0 --keyring-backend test
+./emintd collect-gentxs
+./emintd validate-genesis
+./emintd tendermint show-node-id
+
+```
+第二个节点
+```
+rm -rf ~/.emint*
+./emintd init node1 --chain-id 8
+./emintcli config chain-id 8
+./emintcli config output json
+./emintcli config indent true
+./emintcli config trust-node true
+./emintcli config keyring-backend test
+./emintcli keys add bhptest1
+
+./emintd add-genesis-account $(emintcli keys show bhptest1 -a) 1000000000000000000photon,1000000000000000000stake
+./emintd gentx --name bhptest1 --keyring-backend test
+./emintd collect-gentxs
+./emintd validate-genesis
+./emintd tendermint show-node-id
+```
+第三个节点
+```
+rm -rf ~/.emint*
+./emintd init node2 --chain-id 8
+./emintcli config chain-id 8
+./emintcli config output json
+./emintcli config indent true
+./emintcli config trust-node true
+./emintcli config keyring-backend test
+./emintcli keys add bhptest2
+
+./emintd add-genesis-account $(emintcli keys show bhptest2 -a) 1000000000000000000photon,1000000000000000000stake
+./emintd gentx --name bhptest2 --keyring-backend test
+./emintd collect-gentxs
+./emintd validate-genesis
+./emintd tendermint show-node-id
+```
+第四个节点
+```
+rm -rf ~/.emint*
+./emintd init node3 --chain-id 8
+./emintcli config chain-id 8
+./emintcli config output json
+./emintcli config indent true
+./emintcli config trust-node true
+./emintcli config keyring-backend test
+./emintcli keys add bhptest3
+
+./emintd add-genesis-account $(emintcli keys show bhptest3 -a) 1000000000000000000photon,1000000000000000000stake
+./emintd gentx --name bhptest3 --keyring-backend test
+./emintd collect-gentxs
+./emintd validate-genesis
+./emintd tendermint show-node-id
+./emintd start --p2p.persistent_peers="44e830930073a2c2c680042a9ad15bdb552a9a56@127.0.0.1:26606,f112282214a011a9d68514e26c19a7b8a19d85b9@127.0.0.1:26616,8d503fc4bd653d4eb333cc7f3fbc6d1533e82190@127.0.0.1:26626,77ba7f0ded705826b02d67406d394066f1a2dd41@127.0.0.1:26636"
+```

@@ -123,7 +123,8 @@ tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_pe
 8. 四个节点搭建成功，成功截图如下方动图所示
 
 ![11.gif](./images/ncot-9.gif)
-### Linux方式搭建
+
+## Linux方式搭建
 1. 在home目录新建`testnode`文件夹
 ```
 mkdir testnode
