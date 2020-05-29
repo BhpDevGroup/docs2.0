@@ -17,7 +17,8 @@ Tenermint节点搭建按照系统可分为windows和linux方式。
 ./tendermint testnet
 ```
 ![执行./tendermint testnet](./images/ncot-3.png)
-日志为：
+
+日志：
 ```
 I[2020-05-25|17:46:50.851] Generated private validator                  module=main keyFile=mytestnet\node0\config\priv_validator_key.json stateFile=mytestnet\node0\data\priv_validator_state.json
 I[2020-05-25|17:46:50.921] Generated node key                           module=main path=mytestnet\node0\config\node_key.json
@@ -72,6 +73,7 @@ node2和node3同理，自行改之，不做过多介绍。
 ./tendermint show_node_id --home ./mytestnet/node3
 ```
 ![image.png](./images/ncot-8.png)
+
 日志：
 ```
 wxz@DESKTOP-VO837BA MINGW64 /e/testnode/0
@@ -90,6 +92,7 @@ wxz@DESKTOP-VO837BA MINGW64 /e/testnode/0
 $ ./tendermint show_node_id --home ./mytestnet/node3
 13db9b7388f2192bd65ded3cdf1216ad7e17e6db
 ```
+
 7. 将获取到的四个节点拼接
 拼接之前：
 ```
@@ -133,6 +136,7 @@ mkdir 003
 cd mytestnet/node0/config
 ```
 ![进入config目录](./images/ncot-10.png)
+
 5. 编辑conf.toml文件，修改p2p端口号和rpc端口号
 
 修改后，如下方代码所示
@@ -498,6 +502,7 @@ max_open_connections = 3
 namespace = "tendermint"
 ```
 依次修改001、002、003下的config.toml文件。
+
 6.  在目录000中执行以下代码，获取四个节点ID。
 ```
 tendermint show_node_id --home ./mytestnet/node0
@@ -506,6 +511,7 @@ tendermint show_node_id --home ./mytestnet/node2
 tendermint show_node_id --home ./mytestnet/node3
 ```
 ![image.png](./images/ncot-11.png)
+
 7. 将获取到的四个节点拼接
 拼接之前：
 ```
