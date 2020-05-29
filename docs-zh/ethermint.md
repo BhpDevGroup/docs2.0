@@ -50,8 +50,15 @@ gitee：
 https://gitee.com/holechain/ethermint/
 git clone https://gitee.com/holechain/ethermint.git
 ```
+查看项目代码是否是在`development`分支。
+```
+git branch
+```
+如果不是切换到`development`分支。
+```
+git checkout development
+```
  ### 构建Ethermint
-
 在 `ethermint`目录下安装
 ```
 make install
