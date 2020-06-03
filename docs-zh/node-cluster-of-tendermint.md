@@ -49,8 +49,8 @@ Successfully initialized 4 node directories
 将文中的以下代码
 ```
 proxy_app = "tcp://127.0.0.1:26658"
-laddr = "tcp://127.0.0.1:26607"
-laddr = "tcp://0.0.0.0:26606"
+laddr = "tcp://127.0.0.1:26657"
+laddr = "tcp://0.0.0.0:26656"
 persistent_peers = "6e246ba5675a5036cc13a8e486693b5775d98fe8@node0:26656,adfcd468f111404b09cea838eb574e6bc52fc55f@node1:26656,0f059958939f99f813a2ebefcb5ff2d7a0798575@node2:26656,a822ecd614b8e225b8ca2404586f2bd9386711e7@node3:26656"
 ```
 改为
@@ -101,7 +101,9 @@ $ ./tendermint show_node_id --home ./mytestnet/node3
 13db9b7388f2192bd65ded3cdf1216ad7e17e6db
 ```
 
-7. 将获取到的四个节点拼接
+7. 启动四个节点
+
+根据自己的每个节点id以及和对应ip编写启动命令，以下是启动命令如何配置的示例
 
 拼接之前：
 ```
@@ -110,7 +112,7 @@ tendermint node --home ./mytestnet/node1 --proxy_app=kvstore --p2p.persistent_pe
 tendermint node --home ./mytestnet/node2 --proxy_app=kvstore --p2p.persistent_peers="ID1@IP1:26656,ID2@IP2:26656,ID3@IP3:26656,ID4@IP4:26656"
 tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="ID1@IP1:26656,ID2@IP2:26656,ID3@IP3:26656,ID4@IP4:26656"
 ```
-拼接之后：（在每个目录执行对应代码，目录0指定node0、目录1指定node1....）
+拼接之后：（在每个目录执行对应代码，目录0指定node0、目录1指定node1....，以下node_id和ip用自己的哦，不是文档中的哦）
 ```
 ./tendermint node --home ./mytestnet/node0 --proxy_app=kvstore --p2p.persistent_peers="f5088aa26cf82be7657977603d5a8f9f9cfae267@127.0.0.1:26606,ddb4df78fe5bdf120e8ba9468857765756948e18@127.0.0.1:26616,6bb7f6e1ef06ab114708e421ec84352f5f203e21@127.0.0.1:26626,13db9b7388f2192bd65ded3cdf1216ad7e17e6db@127.0.0.1:26636"
 
@@ -178,22 +180,47 @@ tendermint node --home ./mytestnet/node2 --proxy_app=kvstore --p2p.persistent_pe
 tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="ID1@IP1:26656,ID2@IP2:26656,ID3@IP3:26656,ID4@IP4:26656"
 ```
 拼接之后：（在每个目录执行对应代码，目录0指定node0、目录1指定node1....）
-```
-nohup tendermint node --home ./mytestnet/node0 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@127.0.0.1:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@127.0.0.1:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@127.0.0.1:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@127.0.0.1:26636" > init000.log  &
+```shell script
+nohup tendermint node --home ./mytestnet/node0 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@47.103.38.41:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@47.103.38.41:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@47.103.38.41:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@101.133.151.154:26636" > init000.log  &
 tail -f init000.log
 
-nohup tendermint node --home ./mytestnet/node1 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@127.0.0.1:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@127.0.0.1:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@127.0.0.1:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@127.0.0.1:26636" > init001.log  &
+nohup tendermint node --home ./mytestnet/node1 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@47.103.38.41:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@47.103.38.41:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@47.103.38.41:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@101.133.151.154:26636" > init001.log  &
 tail -f init001.log
 
-nohup tendermint node --home ./mytestnet/node2 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@127.0.0.1:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@127.0.0.1:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@127.0.0.1:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@127.0.0.1:26636" > init002.log  &
+nohup tendermint node --home ./mytestnet/node2 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@47.103.38.41:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@47.103.38.41:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@47.103.38.41:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@101.133.151.154:26636" > init002.log  &
 tail -f init002.log
 
-nohup tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@127.0.0.1:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@127.0.0.1:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@127.0.0.1:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@127.0.0.1:26636" > init003.log  &
+nohup ./tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@47.103.38.41:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@47.103.38.41:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@47.103.38.41:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@101.133.151.154:26636" > init003.log  &
 tail -f init003.log
+
+
+nohup ./tendermint node --home ./mytestnet/node0 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init000.log  &
+tail -f init000.log
+
+nohup ./tendermint node --home ./mytestnet/node1 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init000.log  &
+tail -f init000.log
+
+nohup ./tendermint node --home ./mytestnet/node2 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init000.log  &
+tail -f init000.log
+
+nohup ./tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init000.log  &
+tail -f init000.log
+
+./tendermint node --home ./mytestnet/node4 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636"
+
+nohup ./tendermint node --home ./mytestnet/node4 --proxy_app=kvstore --p2p.persistent_peers="a106df71de7c413311cf2394354b5b5f4e177f09@101.133.151.154:26646,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init004.log  &
+
 ```
 8. 四个节点搭建成功，成功截图如下方动图所示
 
 ![image.png](./images/ncot-12.png)
+
+## 常见问题
+- 读取失败，可能是版本不一致的问题
+- 提示一下错误，可能是之前其他节点的残留端口未关闭比如26657/26658/26656
+```shell script
+ auth failure: conn.ID (382f5658c2e47db72b2556d4ffb2cba22160dffc) dialed ID (dc359124afc062357c85a755128d54e6f3eecefa) mismatch module=pex addr=dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616
+```
 
 
 ## 参考文档
