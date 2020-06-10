@@ -872,8 +872,34 @@ gaiacli query tendermint-validator-set 1936 --chain-id testing
 gaiacli query tendermint-validator-set --chain-id testing
 ```
 
-## gaiacli keys export
+## gaiacli keys update
+更改用于保护私钥的密码。
+- 修改本地密钥的密码
+```shell script
+gaiacli keys update MyKey
+```
 
+## gaiacli keys mnemonic
+通过读取系统熵来创建24个单词组成的bip39助记词（也称为种子短语）。如果需要传递自定义的熵，请使用unsafe-entropy模式。
+```shell script
+iriscli keys mnemonic <flags>
+```
+标志：
+
+|名称, 速记 |	默认 |	描述	|必须 |
+|  ----  | ----  |----  |----  |
+|--unsafe-entropy  |	|	提示用户提供自定义熵，而不是通过系统生成|
+- 创建助记词
+```shell script
+gaiacli keys mnemonic
+```
+执行上述命令后你将得到24个单词组成的助记词，例如：
+```shell script
+coral final clap daring silly joke empower life scout season mammal crack salad awesome train left fresh exchange force fever trial demise garden marine
+```
+
+## gaiacli keys export
+以ASCII的加密格式导出私钥。
 - 导出keystore
 ```shell script
 gaiacli keys export <name> [flags]
@@ -911,4 +937,3 @@ dLVKEd8wCXOq1bJmt/MrQbjU0qUFjJhF6JEu87Q=
 -----END TENDERMINT PRIVATE KEY-----
 ```
 
-- 按交易Hash查询交易
