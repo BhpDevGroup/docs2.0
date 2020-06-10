@@ -1,14 +1,19 @@
 # Gaia 部分命令使用指南
 
 ## gaiacli keys add
-- 创建一个新的密钥（钱包），或通过助记词/密钥库导入已有密钥。
+- 创建一个新的密钥（钱包），或通过助记词/密钥库导入已有密钥。执行该命令后输入并确认密码，将生成一个新的密钥。密码至少8个字符。
+>注意
+>
+>重要
+>
+>写下助记词并保存在安全的地方！如果你不慎忘记密码或丢失了密钥，这是恢复账户的唯一方法。
 ```shell script
 gaiacli keys add <key-name> <flags>
 ```
 - 帮助说明
 
-gaiacli keys add --help
 ```shell script
+root@bhp-cosmos2:/home/gaia# gaiacli keys add --help
 Derive a new private key and encrypt to disk.
 Optionally specify a BIP39 mnemonic, a BIP39 passphrase to further secure the mnemonic,
 and a bip32 HD path to derive a specific account. The key will be stored under the given name
@@ -57,17 +62,8 @@ flags:
 |  名称   | 描述  |
 |  ----  | ----  |
 | -h, --help  | 查询命令帮助 |
-| 单元格  | 单元格 |
-
-###  创建密钥 
-执行该命令后输入并确认密码，将生成一个新的密钥。密码至少8个字符。
->注意
->
->重要
->
->写下助记词并保存在安全的地方！如果你不慎忘记密码或丢失了密钥，这是恢复账户的唯一方法。
  
-
+- 操作示例
 ```shell script
 root@bhp-cosmos2:/home/gaia# gaiacli keys add mykey
 Enter a passphrase to encrypt your key to disk:
@@ -90,7 +86,6 @@ It is the only way to recover your account if you ever forget your password.
 
 wide subject exact fortune pink cricket nose assume captain furnace tackle catch special nose reform toe garment happy toss share debris feed soda mom
 ```
-### 通过助记词恢复密钥
 
 ## gaiacli keys list
 返回此密钥管理器存储的所有密钥的名称、类型、地址和公钥列表。
