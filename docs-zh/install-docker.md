@@ -32,7 +32,7 @@ systemctl status docker
 >使用加速器（采用阿里云加速器）
 >https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
 
-###参考文档
+### 参考文档
 ```shell script
 https://docs.docker.com/engine/install/ubuntu/
 ```
