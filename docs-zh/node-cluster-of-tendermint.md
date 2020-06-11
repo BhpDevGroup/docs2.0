@@ -15,7 +15,7 @@ Tenermint节点搭建按照系统可分为windows和linux方式。
 
 ![目录结构](./images/ncot-2.png)
 
-3. 在`目录0`文件夹中右键打开git bash，然后输入以下命令生成四个节点配置文件。
+3. 在`目录0`文件夹中右键打开git bash，然后输入以下命令生成四个节点配置文件。（注意：win和linux的运行可执行文件生成的配置文件中的路径写法不一致，因此假如把win版的配置文件复制到linux使用要自行修改配置文件中的路径写法）
 ```
 ./tendermint testnet
 ```
@@ -193,7 +193,7 @@ tail -f init002.log
 nohup ./tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="9f6594ced1cd8314c359b34bded2ac9880b60340@47.103.38.41:26606,382f5658c2e47db72b2556d4ffb2cba22160dffc@47.103.38.41:26616,b8316e5743c1ec7e0595b65cefec7a7c5748158b@47.103.38.41:26626,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@101.133.151.154:26636" > init003.log  &
 tail -f init003.log
 
-
+##
 nohup ./tendermint node --home ./mytestnet/node0 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init000.log  &
 tail -f init000.log
 
@@ -206,6 +206,7 @@ tail -f init000.log
 nohup ./tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init000.log  &
 tail -f init000.log
 
+##
 /tendermint node --home ./mytestnet/node3 --proxy_app=kvstore --p2p.persistent_peers="b04fc02bc23a0c660a5e4264a9f51894577db166@47.103.38.41:26606,dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616,c9f3b7f5e46bf4cc62dc04f0020a702a11bf8d6b@47.103.38.41:26626,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636"
 
 nohup ./tendermint node --home ./mytestnet/node4 --proxy_app=kvstore --p2p.persistent_peers="a106df71de7c413311cf2394354b5b5f4e177f09@101.133.151.154:26646,3705dde1f6eefc5fb647ff748023645d53852e5f@101.133.151.154:26636" > init004.log  &
@@ -215,9 +216,84 @@ nohup ./tendermint node --home ./mytestnet/node4 --proxy_app=kvstore --p2p.persi
 
 ![image.png](./images/ncot-12.png)
 
+###节点加入
+节点加入分为非验证节点和验证节点(本示例用linux系统作为演示)
+- 非验证节点接入
+
+复制原始的 `genesis.json` 到 `~/.tendermint/config`
+```shell script
+{
+  "genesis_time": "2020-05-26T06:53:41.402083295Z",
+  "chain_id": "chain-waOdSM",
+  "consensus_params": {
+    "block": {
+      "max_bytes": "22020096",
+      "max_gas": "-1",
+      "time_iota_ms": "1000"
+    },
+    "evidence": {
+      "max_age_num_blocks": "100000",
+      "max_age_duration": "172800000000000",
+      "max_num": 50
+    },
+    "validator": {
+      "pub_key_types": [
+        "ed25519"
+      ]
+    }
+  },
+  "validators": [
+    {
+      "address": "2B61F3C570D421F2E5151C920A8B70D0FC38285C",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "8lIohmxa7nxdh3F6sJxsuP92ZvjX2EDQk4aKMdc/Dn8="
+      },
+      "power": "1",
+      "name": "node0"
+    },
+    {
+      "address": "0E9D395C3FD0A91B25770A5D97E4AAEDB2224473",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "GOnMZkSBMT0RAvSpV6fJTK6KRqzitSgfU05mauvZCYM="
+      },
+      "power": "1",
+      "name": "node1"
+    },
+    {
+      "address": "811812654A1C7337B7E9175C4C00DF8A3E782E1F",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "9wfTIEgM8DkMG3YOcK63jmPrER/jxDjsoy5I1UVD/T0="
+      },
+      "power": "1",
+      "name": "node2"
+    },
+    {
+      "address": "152F1F413D3216D6DC44C1EBE1294EEA57F97304",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "Rl0VDn4Ty8HOQ8EYRVhpmMuwIjkdCJ/FSxZAVU60iYw="
+      },
+      "power": "1",
+      "name": "node3"
+    }
+  ],
+  "app_hash": ""
+}
+```
+连接节点
+```
+./tendermint show_node_id
+./tendermint node --proxy_app=kvstore --p2p.persistent_peers "5ec4a4097bcac694b36281db831b33a26c9f7727@101.133.151.154:26656,b92e1328d91ab40e2de9bd7f5a1df58741aa0204@47.103.38.41:26636"
+```
+
+curl '47.103.38.41:26637/dial_seeds?seeds=\["5ec4a4097bcac694b36281db831b33a26c9f7727@101.133.151.154:26646","b92e1328d91ab40e2de9bd7f5a1df58741aa0204@47.103.38.41:26636"\]'
+
 ## 常见问题
-- 读取失败，可能是版本不一致的问题
-- 提示一下错误，可能是之前其他节点的残留端口未关闭比如26657/26658/26656
+- 读取失败，可能是tendermint版本不一致的问题
+- 提示以下错误，可能是之前其他节点的残留端口未关闭比如26657/26658/26656
 ```shell script
  auth failure: conn.ID (382f5658c2e47db72b2556d4ffb2cba22160dffc) dialed ID (dc359124afc062357c85a755128d54e6f3eecefa) mismatch module=pex addr=dc359124afc062357c85a755128d54e6f3eecefa@47.103.38.41:26616
 ```
