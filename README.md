@@ -1,5 +1,5 @@
-# docs2.0
+# docs of bhp2.0
 
-- [部署属于自己的gaia测试网络](docs-zh/deploy-gaia-testnet.md)
-- [tendermint集群节点搭建](docs-zh/node-cluster-of-tendermint.md)
-- [ethermint部署](docs-zh/ethermint.md)
+- [gaia](docs-zh/deploy-gaia-testnet.md)
+- [tendermint](docs-zh/node-cluster-of-tendermint.md)
+- [ethermint](docs-zh/ethermint.md)
