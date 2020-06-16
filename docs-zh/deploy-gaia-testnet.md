@@ -26,9 +26,9 @@ gaiad start
 ```
 ### 部署多节点
 #### 要求
-- 安装gaia
-- [安装docker](install-docker.md)
-- [安装docker-compose](install-docker-compose.md)
+- [安装gaia](install-gaia.md )
+- [安装docker](install-docker.md )
+- [安装docker-compose](install-docker-compose.md )
 
 #### 建立
 构建运行命令所需的gaiad二进制文件（linux）和tendermint/gaiadnodedocker映像localnet。该二进制文件将安装到容器中，并且可以进行更新以重建映像，因此您只需要构建映像一次。
@@ -109,6 +109,11 @@ build/
 ```shell script
 docker logs -f gaiadnode0
 ```
+#### 密钥 & 账户
+返回此密钥管理器存储的所有密钥的名称、类型、地址和公钥列表。
+```shell script
+gaiacli keys list --home ./build/node0/gaiacli
+```
 
 
 ### 复位
@@ -119,9 +124,10 @@ docker logs -f gaiadnode0
 gaiad unsafe-reset-all
 ```
 
-### 普通节点加入
+### 普通节点加入自己部署的测试网络
 ```shell script
-gaiad init <your_custom_moniker> --chain-id=irishub
+gaiad init <your_custom_moniker> --chain-id=chain-G7L8cJ
+gaiad start
 ```
 
 
