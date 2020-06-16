@@ -937,3 +937,10 @@ dLVKEd8wCXOq1bJmt/MrQbjU0qUFjJhF6JEu87Q=
 -----END TENDERMINT PRIVATE KEY-----
 ```
 
+## 复位
+> 警告：不安全只有在开发中这样做，并且只有在您能够承受丢失所有区块链数据的代价时才这样做!
+
+要重置区块链，请停止节点并运行：
+```shell script
+gaiad unsafe-reset-all
+```
