@@ -1,5 +1,8 @@
-## 部署自己的Gaia测试网
-### 部署单节点
+## 部署私有的Gaia测试网
+### 一、部署单节点
+#### 要求
+- [安装gaia](install-gaia.md )
+#### 创建genesis.json文件并启动网络
 ```shell script
 # You can run all of these commands from your home directory
 cd $HOME
@@ -24,7 +27,7 @@ gaiad collect-gentxs
 # Now its safe to start `gaiad`
 gaiad start
 ```
-### 部署多节点
+### 二、部署多节点
 #### 要求
 - [安装gaia](install-gaia.md )
 - [安装docker](install-docker.md )
@@ -109,26 +112,48 @@ build/
 ```shell script
 docker logs -f gaiadnode0
 ```
-#### 密钥 & 账户
+#### 密钥和账户
 返回此密钥管理器存储的所有密钥的名称、类型、地址和公钥列表。
 ```shell script
 gaiacli keys list --home ./build/node0/gaiacli
 ```
 
-
-### 复位
-> 警告：不安全只有在开发中这样做，并且只有在您能够承受丢失所有区块链数据的代价时才这样做!
-
-要重置区块链，请停止节点并运行：
+### 三、普通节点加入自己部署的测试网络
+1. 获取上一步中四个验证人节点node-id和对应的P2P端口（先保存到临时文件）
 ```shell script
-gaiad unsafe-reset-all
+gaiad tendermint  show-node-id --home ./build/nodeN/gaiad
 ```
-
-### 普通节点加入自己部署的测试网络
+2. 下载`./build/nodeN/gaiad`目录中任意一个节点的`config.toml`和`genesis.json`到本地
+> 主要目的是修改`config.toml`和`genesis.json`以供普通节点使用
+- 找到`config.toml`文件中的`persistent_peers`,按照自己测试网络的四个验证人节点node-id和对应的P2P端口修改成类似以下内容
+```shell script
+persistent_peers = "6b765eacccacac40a5e2f63961da73cf1f5ee2a5@127.0.0.1:26656,3c928896e21580925c96f9833b4b63c8cc2dbd78@127.0.0.1:26659,5dee586a8b70ee18935cbb9f4aa2176bd31211e6@127.0.0.1:26661,9ab7b59fc5be3827576cbd4741dc546bff8695d3@127.0.0.1:26663"
+```
+- 找到`config.toml`文件中的`moniker`修改成类似以下内容
+```shell script
+# A custom human readable name for this node
+moniker = "bhphub"
+```
+- 找到`genesis.json`文件中的`chain_id`（下一步初始化使用）
+```shell script
+  "chain_id": "chain-G7L8cJ",
+```
+3. 初始化节点
 ```shell script
 gaiad init <your_custom_moniker> --chain-id=chain-G7L8cJ
 gaiad start
 ```
+4. 将步骤2中的`config.toml`和`genesis.json`替换步骤3中的对应文件，默认路径是`~/.gaiad/config/`目录下
+5. 启动gaia节点
+```shell script
+gaiad start
+```
+>提示
+> 您可能会看到一些连接错误，这没关系，P2P网络正在尝试查找可用的连接
+> 可以添加几个社区公开节点到config.toml中的persistent_peers。
+
+### 扩展
+- [Gaia 部分命令使用指南](gaia.md )
 
 
 
