@@ -1,6 +1,6 @@
 ## 部署私有的Gaia测试网
 ### 一、部署单节点
-#### 要求
+#### 前提
 - [安装gaia](install-gaia.md )
 #### 创建genesis.json文件并启动网络
 ```shell script
@@ -10,25 +10,52 @@ cd $HOME
 # Initialize the genesis.json file that will help you to bootstrap the network
 gaiad init --chain-id=testing testing
 
-# Create a key to hold your validator account
+# 创建一个钱包作为您的验证人帐户
 gaiacli keys add validator
 
-# Add that key into the genesis.app_state.accounts array in the genesis file
-# NOTE: this command lets you set the number of coins. Make sure this account has some coins
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
 # with the genesis.app_state.staking.params.bond_denom denom, the default is staking
 gaiad add-genesis-account $(gaiacli keys show validator -a) 1000000000stake,1000000000validatortoken
 
-# Generate the transaction that creates your validator
+# 生成创建验证人的交易，gentx存储在~/.gaiad/config/中
 gaiad gentx --name validator
 
-# Add the generated bonding transaction to the genesis file
+# 将生成的质押交易添加到创世文件：Add the generated bonding transaction to the genesis file
 gaiad collect-gentxs
 
-# Now its safe to start `gaiad`
+# 现在可以启动gaiad了：Now its safe to start `gaiad`
 gaiad start
 ```
+#### gaiad unsafe-reset-all
+可以使用此命令来重置节点，包括本地区块链数据库，地址簿文件，并将priv_validator.json重置为创世状态。
+
+当本地区块链数据库以某种方式中断和无法同步或参与共识时，这是有用的。
+```shell script
+gaiad unsafe-reset-all
+```
+#### gaiad tendermint
+查询可以在p2p连接中使用的唯一节点ID，例如在`config.toml`中seeds和persistent_peers的格式<node-id>@ip:26656。
+
+节点ID存储在node_key.json中。
+```shell script
+gaiad tendermint show-node-id
+```
+查询Tendermint Pubkey，用于identify your validator,并将用于在共识过程中签署Pre-vote/Pre-commit。
+
+Tendermint Key存储在priv_validator.json中，创建验证人后，请一定要记得备份。
+```shell script
+tendermint show-validator
+```
+查询bech32前缀验证人地址
+```shell script
+gaiad tendermint show-address
+```
+#### gaiad export
+请参阅[导出区块状态](gaiad-export.md )。
+
 ### 二、部署多节点
-#### 要求
+#### 前提
 - [安装gaia](install-gaia.md )
 - [安装docker](install-docker.md )
 - [安装docker-compose](install-docker-compose.md )
@@ -49,11 +76,11 @@ make build-linux
 make build-docker-gaiadnode
 ```
 #### 启动
-启动4个网络节点
+启动4个网络节点(此方式的钱包默认密码是`12345678`)
 ```shell script
 make localnet-start
 ```
-此命令使用gaiadnode映像创建4个节点网络。下表中是每个节点对应的端口：
+该命令使用gaiadnode映像创建4个节点网络。下表中是每个节点对应的端口：
 
 |  节点编号   | P2P端口  | RPC端口  |
 |  ----  | ----  | ----  |
@@ -65,8 +92,14 @@ make localnet-start
 ```shell script
 make build-linux localnet-start
 ```
+#### 停止
+停止所有正在运行的节点：
+```shell script
+make testnet_stop
+```
+
 #### 结构
-该`make localnet-start`部署四个节点的测试网络会在`./build`中调用`gaiad testnet`命令，然后在 `./build` 目录下输入文件:
+`make localnet-start`命令会调用`gaiad testnet`命令在 `./build` 目录下生成4个节点的测试网配置文件。
 ```shell script
 $ tree -L 2 build/
 build/
@@ -149,11 +182,119 @@ gaiad start
 gaiad start
 ```
 >提示
-> 您可能会看到一些连接错误，这没关系，P2P网络正在尝试查找可用的连接
+>
+>您可能会看到一些连接错误，这没关系，P2P网络正在尝试查找可用的连接
 > 可以添加几个社区公开节点到config.toml中的persistent_peers。
+### 四、普通节点升级为验证人节点
+#### 创建钱包
+- 创建一个新的密钥（钱包），或通过助记词/密钥库导入已有密钥。执行该命令后输入并确认密码，将生成一个新的密钥。密码至少8个字符。
+```shell script
+gaiacli keys add <key-name> <flags>
+```
+>注意
+>
+>在安全的地方备份好助记词！如果您忘记密码，这是恢复帐户的唯一方法。
+#### 确认节点同步状态
+```shell script
+# 可以使用此命令安装 jq
+# apt-get update && apt-get install -y jq
 
+# 如果输出为 false, 则表明您的节点已经完成同步
+gaiacli status | jq .sync_info.catching_up
+```
+gaiacli status | jq 输出命令如以下类似内容
+```shell script
+root@bhp-cosmos2:~# gaiacli status | jq
+{
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "6bf94172dca55d256923eb0bc1340678f5a8efcd",
+    "listen_addr": "tcp://0.0.0.0:26656",
+    "network": "chain-Yzniwz",
+    "version": "0.32.11",
+    "channels": "4020212223303800",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://0.0.0.0:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "FFA1E0C3453B39274ED169E0C04F41CB4A342DD536B49D8D374A6F02C343BBB2",
+    "latest_app_hash": "B995E5FE887A3A70170AF4AC46551F1E0F44B177457D120EF20CC9918C2C3EA0",
+    "latest_block_height": "2659",
+    "latest_block_time": "2020-06-17T07:27:48.950411877Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "4D819781779C930FB6DF90A56518E649B3BA5FCE",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "iQ3vtfWZGFArk/bKzpN8uIqYrKLl6dS8YTGnQrlFDGM="
+    },
+    "voting_power": "100"
+  }
+}
+```
+#### 创建验证人
+只有节点已完成同步时，才可以运行以下命令将您的节点升级为验证人：
+
+下面命令中的moniker、chain_id、key_name设置为自己的
+```shell script
+gaiacli tx staking create-validator \
+  --amount=1000000uatom \
+  --pubkey=$(gaiad tendermint show-validator) \
+  --moniker="choose a moniker" \
+  --chain-id=<chain_id> \
+  --commission-rate="0.10" \
+  --commission-max-rate="0.20" \
+  --commission-max-change-rate="0.01" \
+  --min-self-delegation="1" \
+  --gas="auto" \
+  --gas-prices="0.025uatom" \
+  --from=<key_name>
+```
+
+
+```shell script
+gaiacli tx staking create-validator \
+  --amount=1000000stake \
+  --pubkey=$(gaiad tendermint show-validator) \
+  --moniker="bhphub" \
+  --chain-id=chain-Yzniwz \
+  --commission-rate="0.10" \
+  --commission-max-rate="0.20" \
+  --commission-max-change-rate="0.01" \
+  --min-self-delegation="1" \
+  --gas="auto" \
+  --gas-prices="0.025stake" \
+  --from=bhp
+```
+
+
+```shell script
+gaiacli stake create-validator \
+    --pubkey=$(iris tendermint show-validator) \
+    --moniker=<your-validator-name> \
+    --amount=<amount-to-be-delegated, e.g. 10000iris> \
+    --commission-rate=0.1 \
+    --gas=100000 \
+    --fee=0.6iris \
+    --chain-id=irishub \
+    --from=<key-name> \
+    --commit
+```
+>注意
+>
+>重要
+>
+>一定要备份好 home（默认为〜/.gaiad/）目录中的 config 目录！如果您的服务器磁盘损坏或您准备迁移服务器，这是恢复验证人的唯一方法。
 ### 扩展
-- [Gaia 部分命令使用指南](gaia.md )
+- [Gaia命令行客户端部分命令使用指南](gaiacli.md )
 
 
 
