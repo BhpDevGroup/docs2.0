@@ -35,19 +35,19 @@ gaiad start
 gaiad unsafe-reset-all
 ```
 #### gaiad tendermint
-查询可以在p2p连接中使用的唯一节点ID，例如在`config.toml`中seeds和persistent_peers的格式<node-id>@ip:26656。
+- 查询可以在p2p连接中使用的唯一节点ID，例如在`config.toml`中seeds和persistent_peers的格式<node-id>@ip:26656。
 
 节点ID存储在node_key.json中。
 ```shell script
 gaiad tendermint show-node-id
 ```
-查询Tendermint Pubkey，用于identify your validator,并将用于在共识过程中签署Pre-vote/Pre-commit。
+- 查询Tendermint Pubkey，用于identify your validator,并将用于在共识过程中签署Pre-vote/Pre-commit。
 
 Tendermint Key存储在priv_validator.json中，创建验证人后，请一定要记得备份。
 ```shell script
-tendermint show-validator
+gaiad tendermint show-validator
 ```
-查询bech32前缀验证人地址
+- 查询bech32前缀验证人地址
 ```shell script
 gaiad tendermint show-address
 ```
@@ -194,6 +194,16 @@ gaiacli keys add <key-name> <flags>
 >注意
 >
 >在安全的地方备份好助记词！如果您忘记密码，这是恢复帐户的唯一方法。
+- 从其他地方转入一些币到您刚刚创建的钱包中：
+可能会用到以下命令
+```shell script
+# 查询当前节点的钱包地址
+gaiacli keys list
+# 查询钱包地址的余额
+gaiacli query account <account>
+# 从其他地方转入一些币到您刚刚创建的钱包
+gaiacli tx send cosmos1ras3ts4pw6904rlhecjc2kqar0t26sputjgy9c cosmos1v9sgfualu5uqdly0kvavjg4z5ppalfhkgt5kut 900000stake --chain-id chain-Yzniwz --fees=2stake --home /home/gaia/build/node0/gaiacli/
+```
 #### 确认节点同步状态
 ```shell script
 # 可以使用此命令安装 jq
@@ -244,6 +254,8 @@ root@bhp-cosmos2:~# gaiacli status | jq
 只有节点已完成同步时，才可以运行以下命令将您的节点升级为验证人：
 
 下面命令中的moniker、chain_id、key_name设置为自己的
+
+设置之前：
 ```shell script
 gaiacli tx staking create-validator \
   --amount=1000000uatom \
@@ -259,7 +271,10 @@ gaiacli tx staking create-validator \
   --from=<key_name>
 ```
 
-
+设置之后：
+>注意
+>
+> --gas 和 --gas-prices 选择其中一种就行
 ```shell script
 gaiacli tx staking create-validator \
   --amount=1000000stake \
@@ -270,24 +285,48 @@ gaiacli tx staking create-validator \
   --commission-max-rate="0.20" \
   --commission-max-change-rate="0.01" \
   --min-self-delegation="1" \
-  --gas="auto" \
   --gas-prices="0.025stake" \
   --from=bhp
 ```
-
-
+输出以下结果执行正常
 ```shell script
-gaiacli stake create-validator \
-    --pubkey=$(iris tendermint show-validator) \
-    --moniker=<your-validator-name> \
-    --amount=<amount-to-be-delegated, e.g. 10000iris> \
-    --commission-rate=0.1 \
-    --gas=100000 \
-    --fee=0.6iris \
-    --chain-id=irishub \
-    --from=<key-name> \
-    --commit
+{
+    "height":"0",
+    "txhash":"FE6B5714B99392ED15353C3F3A9165CAB4A92C075290F47F4D9D59D7B5464EC0",
+    "raw_log":"[{"msg_index":0,"success":true,"log":"","events":[{"type":"message","attributes":[{"key":"action","value":"create_validator"}]}]}]",
+    "logs":[
+        {
+            "msg_index":0,
+            "success":true,
+            "log":"",
+            "events":[
+                {
+                    "type":"message",
+                    "attributes":[
+                        {
+                            "key":"action",
+                            "value":"create_validator"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
 ```
+然后查询该交易hash结果查看是否成功成为验证人
+```shell script
+gaiacli query tx FE6B5714B99392ED15353C3F3A9165CAB4A92C075290F47F4D9D59D7B5464EC0 | jq
+```
+输出以下结果
+```shell script
+
+```
+#### 如何备份验证人节点
+安全备份验证人节点私钥非常重要，这是恢复验证人节点的唯一方法。请注意，这里指的是Tendermint密钥。
+如果您使用的是软件签名（tendermint的默认签名方法），则您的Tendermint密钥位于<gaiad-home>/config/priv_validator.json中。最简单的方法是备份整个config文件夹。
+
+
 >注意
 >
 >重要
