@@ -131,9 +131,214 @@ gaiacli tx staking create-validator \
 ```shell script
 gaiacli query tx FE6B5714B99392ED15353C3F3A9165CAB4A92C075290F47F4D9D59D7B5464EC0 | jq
 ```
-输出以下结果
 
-### 编辑验证人
+### 查询所有验证人
+```shell script
+gaiacli query staking validators
+```
+输出结果
+```shell script
+[
+    {
+        "operator_address":"cosmosvaloper1ps5tawelalv5vmjjmqyenez45s45dm7nrudcxv",
+        "consensus_pubkey":"cosmosvalconspub1zcjduepqf6kaq98x2kz4njrt5w24quz468e24pqevd0tk6ghzh2mhur0lexqvhgp4g",
+        "jailed":false,
+        "status":2,
+        "tokens":"100000000",
+        "delegator_shares":"100000000.000000000000000000",
+        "description":{
+            "moniker":"node3",
+            "identity":"",
+            "website":"",
+            "details":""
+        },
+        "unbonding_height":"0",
+        "unbonding_time":"1970-01-01T00:00:00Z",
+        "commission":{
+            "commission_rates":{
+                "rate":"0.000000000000000000",
+                "max_rate":"0.000000000000000000",
+                "max_change_rate":"0.000000000000000000"
+            },
+            "update_time":"2020-06-17T03:32:13.227077009Z"
+        },
+        "min_self_delegation":"1"
+    },
+    {
+        "operator_address":"cosmosvaloper1rcakdv9wwvug55yvkfx53hyug4n5m5sm7pe9yn",
+        "consensus_pubkey":"cosmosvalconspub1zcjduepqzxc6xxmc906e0smc87gfh7a6wymqpvf0zc9e5vt2zemp5p5rhw8qxut6mq",
+        "jailed":false,
+        "status":2,
+        "tokens":"100000000",
+        "delegator_shares":"100000000.000000000000000000",
+        "description":{
+            "moniker":"node2",
+            "identity":"",
+            "website":"",
+            "details":""
+        },
+        "unbonding_height":"0",
+        "unbonding_time":"1970-01-01T00:00:00Z",
+        "commission":{
+            "commission_rates":{
+                "rate":"0.000000000000000000",
+                "max_rate":"0.000000000000000000",
+                "max_change_rate":"0.000000000000000000"
+            },
+            "update_time":"2020-06-17T03:32:13.227077009Z"
+        },
+        "min_self_delegation":"1"
+    },
+    {
+        "operator_address":"cosmosvaloper1ras3ts4pw6904rlhecjc2kqar0t26spuwxu3ft",
+        "consensus_pubkey":"cosmosvalconspub1zcjduepq3yx7ld04nyv9q2un7m9vaymuhz9f3t9zuh5af0rpxxn59w29p33sgthczz",
+        "jailed":false,
+        "status":2,
+        "tokens":"100000000",
+        "delegator_shares":"100000000.000000000000000000",
+        "description":{
+            "moniker":"node0",
+            "identity":"",
+            "website":"",
+            "details":""
+        },
+        "unbonding_height":"0",
+        "unbonding_time":"1970-01-01T00:00:00Z",
+        "commission":{
+            "commission_rates":{
+                "rate":"0.000000000000000000",
+                "max_rate":"0.000000000000000000",
+                "max_change_rate":"0.000000000000000000"
+            },
+            "update_time":"2020-06-17T03:32:13.227077009Z"
+        },
+        "min_self_delegation":"1"
+    },
+    {
+        "operator_address":"cosmosvaloper1y0hk7xeqdqk50kmryp0e2xy4vklhyfvx0rpeyt",
+        "consensus_pubkey":"cosmosvalconspub1zcjduepqua8r36armuzm3uhfk6lf6f8q0usmjd3wdfk8shz0ug2n63exkahsrc24sk",
+        "jailed":false,
+        "status":2,
+        "tokens":"100000000",
+        "delegator_shares":"100000000.000000000000000000",
+        "description":{
+            "moniker":"node1",
+            "identity":"",
+            "website":"",
+            "details":""
+        },
+        "unbonding_height":"0",
+        "unbonding_time":"1970-01-01T00:00:00Z",
+        "commission":{
+            "commission_rates":{
+                "rate":"0.000000000000000000",
+                "max_rate":"0.000000000000000000",
+                "max_change_rate":"0.000000000000000000"
+            },
+            "update_time":"2020-06-17T03:32:13.227077009Z"
+        },
+        "min_self_delegation":"1"
+    },
+    {
+        "operator_address":"cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc",
+        "consensus_pubkey":"cosmosvalconspub1zcjduepq04sgtf5pgde6r47hrzh0r3sx4m0raxd86l5frczcxyjujpnjtmkst8s59w",
+        "jailed":false,
+        "status":2,
+        "tokens":"1000000",
+        "delegator_shares":"1000000.000000000000000000",
+        "description":{
+            "moniker":"bhphub",
+            "identity":"",
+            "website":"https://www.bhpa.io",
+            "details":"To infinity and beyond!"
+        },
+        "unbonding_height":"0",
+        "unbonding_time":"1970-01-01T00:00:00Z",
+        "commission":{
+            "commission_rates":{
+                "rate":"0.100000000000000000",
+                "max_rate":"0.200000000000000000",
+                "max_change_rate":"0.010000000000000000"
+            },
+            "update_time":"2020-06-22T03:57:35.104336048Z"
+        },
+        "min_self_delegation":"1"
+    }
+]
+```
+
+### 查询自己的验证人节点
+查询验证人地址的编码格式的钱包地址
+```shell script
+gaiacli keys show [name [name...]] [flags]
+# 案例
+gaiacli keys show bhp --bech=val
+```
+示例输出：
+```shell script
+{
+  "name": "bhp",
+  "type": "local",
+  "address": "cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc",
+  "pubkey": "cosmosvaloperpub1addwnpepqfklmvz4z447wv5c7nux4m6c3x9a2pqwlg7jvpkxvpkflwu5pqzxvxdyfq0"
+}
+```
+
+### 查看验证人信息
+通过地址查询验证人
+```shell script
+gaiacli query staking validator cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc
+```
+示例输出：
+```shell script
+{
+    "operator_address":"cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc",
+    "consensus_pubkey":"cosmosvalconspub1zcjduepq04sgtf5pgde6r47hrzh0r3sx4m0raxd86l5frczcxyjujpnjtmkst8s59w",
+    "jailed":false,
+    "status":2,
+    "tokens":"1000000",
+    "delegator_shares":"1000000.000000000000000000",
+    "description":{
+        "moniker":"bhphub",
+        "identity":"",
+        "website":"https://www.bhpa.io",
+        "details":"To infinity and beyond!"
+    },
+    "unbonding_height":"0",
+    "unbonding_time":"1970-01-01T00:00:00Z",
+    "commission":{
+        "commission_rates":{
+            "rate":"0.100000000000000000",
+            "max_rate":"0.200000000000000000",
+            "max_change_rate":"0.010000000000000000"
+        },
+        "update_time":"2020-06-22T03:57:35.104336048Z"
+    },
+    "min_self_delegation":"1"
+}
+```
+
+### 查询验证人签名信息
+```shell script
+gaiacli query slashing signing-info <validator-pubkey>\
+  --chain-id=<chain_id>
+
+# 案例
+gaiacli query slashing signing-info cosmosvalconspub1zcjduepq04sgtf5pgde6r47hrzh0r3sx4m0raxd86l5frczcxyjujpnjtmkst8s59w
+```
+示例输出：
+```shell script
+{
+  "address": "cosmosvalcons1fhq6hflgsgrx5r7mas0gvnelhgx057re65dyr2",
+  "start_height": "19158",
+  "index_offset": "65018",
+  "jailed_until": "1970-01-01T00:00:00Z",
+  "tombstoned": false,
+  "missed_blocks_counter": "0"
+}
+```
+
+### 编辑验证人信息
 修改验证的的参数，包括佣金比率，验证人节点名称以及其他描述信息。
 
 |  名称   | 类型  | 必须  | 默认  | 描述  |
@@ -347,174 +552,56 @@ root@bhp-cosmos2:~/.gaiad# gaiacli query tx B860DC121A3D24229BE8C32812425EF6B476
     ]
 }
 ```
-### 查询所有验证人
-```shell script
- gaiacli query staking validators
-```
-输出结果
-```shell script
-[
-    {
-        "operator_address":"cosmosvaloper1ps5tawelalv5vmjjmqyenez45s45dm7nrudcxv",
-        "consensus_pubkey":"cosmosvalconspub1zcjduepqf6kaq98x2kz4njrt5w24quz468e24pqevd0tk6ghzh2mhur0lexqvhgp4g",
-        "jailed":false,
-        "status":2,
-        "tokens":"100000000",
-        "delegator_shares":"100000000.000000000000000000",
-        "description":{
-            "moniker":"node3",
-            "identity":"",
-            "website":"",
-            "details":""
-        },
-        "unbonding_height":"0",
-        "unbonding_time":"1970-01-01T00:00:00Z",
-        "commission":{
-            "commission_rates":{
-                "rate":"0.000000000000000000",
-                "max_rate":"0.000000000000000000",
-                "max_change_rate":"0.000000000000000000"
-            },
-            "update_time":"2020-06-17T03:32:13.227077009Z"
-        },
-        "min_self_delegation":"1"
-    },
-    {
-        "operator_address":"cosmosvaloper1rcakdv9wwvug55yvkfx53hyug4n5m5sm7pe9yn",
-        "consensus_pubkey":"cosmosvalconspub1zcjduepqzxc6xxmc906e0smc87gfh7a6wymqpvf0zc9e5vt2zemp5p5rhw8qxut6mq",
-        "jailed":false,
-        "status":2,
-        "tokens":"100000000",
-        "delegator_shares":"100000000.000000000000000000",
-        "description":{
-            "moniker":"node2",
-            "identity":"",
-            "website":"",
-            "details":""
-        },
-        "unbonding_height":"0",
-        "unbonding_time":"1970-01-01T00:00:00Z",
-        "commission":{
-            "commission_rates":{
-                "rate":"0.000000000000000000",
-                "max_rate":"0.000000000000000000",
-                "max_change_rate":"0.000000000000000000"
-            },
-            "update_time":"2020-06-17T03:32:13.227077009Z"
-        },
-        "min_self_delegation":"1"
-    },
-    {
-        "operator_address":"cosmosvaloper1ras3ts4pw6904rlhecjc2kqar0t26spuwxu3ft",
-        "consensus_pubkey":"cosmosvalconspub1zcjduepq3yx7ld04nyv9q2un7m9vaymuhz9f3t9zuh5af0rpxxn59w29p33sgthczz",
-        "jailed":false,
-        "status":2,
-        "tokens":"100000000",
-        "delegator_shares":"100000000.000000000000000000",
-        "description":{
-            "moniker":"node0",
-            "identity":"",
-            "website":"",
-            "details":""
-        },
-        "unbonding_height":"0",
-        "unbonding_time":"1970-01-01T00:00:00Z",
-        "commission":{
-            "commission_rates":{
-                "rate":"0.000000000000000000",
-                "max_rate":"0.000000000000000000",
-                "max_change_rate":"0.000000000000000000"
-            },
-            "update_time":"2020-06-17T03:32:13.227077009Z"
-        },
-        "min_self_delegation":"1"
-    },
-    {
-        "operator_address":"cosmosvaloper1y0hk7xeqdqk50kmryp0e2xy4vklhyfvx0rpeyt",
-        "consensus_pubkey":"cosmosvalconspub1zcjduepqua8r36armuzm3uhfk6lf6f8q0usmjd3wdfk8shz0ug2n63exkahsrc24sk",
-        "jailed":false,
-        "status":2,
-        "tokens":"100000000",
-        "delegator_shares":"100000000.000000000000000000",
-        "description":{
-            "moniker":"node1",
-            "identity":"",
-            "website":"",
-            "details":""
-        },
-        "unbonding_height":"0",
-        "unbonding_time":"1970-01-01T00:00:00Z",
-        "commission":{
-            "commission_rates":{
-                "rate":"0.000000000000000000",
-                "max_rate":"0.000000000000000000",
-                "max_change_rate":"0.000000000000000000"
-            },
-            "update_time":"2020-06-17T03:32:13.227077009Z"
-        },
-        "min_self_delegation":"1"
-    },
-    {
-        "operator_address":"cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc",
-        "consensus_pubkey":"cosmosvalconspub1zcjduepq04sgtf5pgde6r47hrzh0r3sx4m0raxd86l5frczcxyjujpnjtmkst8s59w",
-        "jailed":false,
-        "status":2,
-        "tokens":"1000000",
-        "delegator_shares":"1000000.000000000000000000",
-        "description":{
-            "moniker":"bhphub",
-            "identity":"",
-            "website":"https://www.bhpa.io",
-            "details":"To infinity and beyond!"
-        },
-        "unbonding_height":"0",
-        "unbonding_time":"1970-01-01T00:00:00Z",
-        "commission":{
-            "commission_rates":{
-                "rate":"0.100000000000000000",
-                "max_rate":"0.200000000000000000",
-                "max_change_rate":"0.010000000000000000"
-            },
-            "update_time":"2020-06-22T03:57:35.104336048Z"
-        },
-        "min_self_delegation":"1"
-    }
-]
-```
 
-### 查看验证人描述 
-通过地址查询验证人
+### 委托人指南
+请参阅[委托人指南](gaia-delegator.md )。
+
+### 查看验证人节点是否正常运行
+如果该命令返回以下类似内容，则表明验证人节点处于活跃状态：
 ```shell script
-gaiacli query staking validator cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc
+gaiacli query tendermint-validator-set
+# 或者
+gaiacli query tendermint-validator-set | grep "$(gaiad tendermint show-validator)"
 ```
-输出结果
+您可以在`~/.gaiad/config/priv_validator.json`文件中找到bech32的地址。
 ```shell script
 {
-    "operator_address":"cosmosvaloper1v9sgfualu5uqdly0kvavjg4z5ppalfhkdlqrsc",
-    "consensus_pubkey":"cosmosvalconspub1zcjduepq04sgtf5pgde6r47hrzh0r3sx4m0raxd86l5frczcxyjujpnjtmkst8s59w",
-    "jailed":false,
-    "status":2,
-    "tokens":"1000000",
-    "delegator_shares":"1000000.000000000000000000",
-    "description":{
-        "moniker":"bhphub",
-        "identity":"",
-        "website":"https://www.bhpa.io",
-        "details":"To infinity and beyond!"
-    },
-    "unbonding_height":"0",
-    "unbonding_time":"1970-01-01T00:00:00Z",
-    "commission":{
-        "commission_rates":{
-            "rate":"0.100000000000000000",
-            "max_rate":"0.200000000000000000",
-            "max_change_rate":"0.010000000000000000"
+    "block_height":"83123",
+    "validators":[
+        {
+            "address":"cosmosvalcons1zt33dxpqvvtlaasmnus0tjujcj6u7rzq52an0l",
+            "pub_key":"cosmosvalconspub1zcjduepqf6kaq98x2kz4njrt5w24quz468e24pqevd0tk6ghzh2mhur0lexqvhgp4g",
+            "proposer_priority":"-60",
+            "voting_power":"100"
         },
-        "update_time":"2020-06-22T03:57:35.104336048Z"
-    },
-    "min_self_delegation":"1"
+        {
+            "address":"cosmosvalcons1fkqe0qthnjfsldkljzjk2x8xfxem5h7wn9cxx2",
+            "pub_key":"cosmosvalconspub1zcjduepq3yx7ld04nyv9q2un7m9vaymuhz9f3t9zuh5af0rpxxn59w29p33sgthczz",
+            "proposer_priority":"-60",
+            "voting_power":"100"
+        },
+        {
+            "address":"cosmosvalcons1fhq6hflgsgrx5r7mas0gvnelhgx057re65dyr2",
+            "pub_key":"cosmosvalconspub1zcjduepq04sgtf5pgde6r47hrzh0r3sx4m0raxd86l5frczcxyjujpnjtmkst8s59w",
+            "proposer_priority":"-155",
+            "voting_power":"1"
+        },
+        {
+            "address":"cosmosvalcons15jzxyc3vedpw8awzp5l0mqhcepz6qpy5rdwm85",
+            "pub_key":"cosmosvalconspub1zcjduepqzxc6xxmc906e0smc87gfh7a6wymqpvf0zc9e5vt2zemp5p5rhw8qxut6mq",
+            "proposer_priority":"-61",
+            "voting_power":"100"
+        },
+        {
+            "address":"cosmosvalcons1480f99xeh4m7u9qq6qm5gf4kmz0tdx2ju3rzna",
+            "pub_key":"cosmosvalconspub1zcjduepqua8r36armuzm3uhfk6lf6f8q0usmjd3wdfk8shz0ug2n63exkahsrc24sk",
+            "proposer_priority":"340",
+            "voting_power":"100"
+        }
+    ]
 }
 ```
+
 ### 如何备份验证人节点
 安全备份验证人节点私钥非常重要，这是恢复验证人节点的唯一方法。请注意，这里指的是Tendermint密钥。
 如果您使用的是软件签名（tendermint的默认签名方法），则您的Tendermint密钥位于<gaiad-home>/config/priv_validator.json中。最简单的方法是备份整个config文件夹。
