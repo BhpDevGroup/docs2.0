@@ -92,10 +92,25 @@ make localnet-start
 ```shell script
 make build-linux localnet-start
 ```
-#### 停止
-停止所有正在运行的节点：
+#### 升级版本
+升级二进制文件版本
+- 暂停节点
 ```shell script
-make testnet_stop
+docker-compose down
+```
+- 备份数据
+
+将此项目目录(目录名称默认是gaia)改名为其他（防止重名）
+- 克隆最新版本源码
+查看当前[最新发行版](https://github.com/cosmos/gaia/releases)
+```shell script
+git clone -b <latest-release-tag> https://github.com/cosmos/gaia
+cd gaia && make install
+```
+复制之前项目下的build目录到此目录下
+- 重新启动
+```shell script
+make build-linux localnet-start
 ```
 
 #### 结构
