@@ -60,6 +60,7 @@ git checkout development
 ```
  ### 构建Ethermint
 在 `ethermint`目录下安装
+>请确保您的服务器可以访问 google.com，因为我们的项目依赖于google提供的某些库（如果您无法访问google.com，也可以尝试添加代理：export GOPROXY=https://goproxy.io）
 ```
 make install
 ```
@@ -172,6 +173,5 @@ make test-cli
 ```
 ### 节点集群
 
-[节点集群部署](node-cluster-of-ethermint.md)
-
+[节点集群部署](./node-cluster-of-ethermint.md)
 
