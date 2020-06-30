@@ -1,180 +1,181 @@
 ## Ethermint节点集群
-Ethermint可选用手动初始化搭建多节点
 
-删除现有的守护程序`.emintd`和客户端`.emintcli`
+### 常用命令
+- 删除数据
+
+此命令会删除守护程序`.emintd`和客户端`.emintcli`目录
 ```
 rm -rf ~/.emint*
 ```
-设置Ethermint的网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
-```
-emintd init node0 --chain-id 8
-```
-参数设置
-```
-emintcli config chain-id 8
-emintcli config output json
-emintcli config indent true
-emintcli config trust-node true
-emintcli config keyring-backend test
-```
-签署创始交易的密钥：(代码中的mykey替换成自己定义的字段,比如换成：bhptest2)
-```
-emintcli keys add bhptest2
-```
-分配创始帐户额度
-```
-emintd add-genesis-account $(emintcli keys show bhptest2 -a) 1000000000000000000photon,1000000000000000000stake
-emintd gentx --name bhptest2 --keyring-backend test
-```
-查看创始交易集合
-```
-emintd collect-gentxs
-```
-验证有效性
-```
-emintd validate-genesis
-```
-获取本节点node-id
-```
-emintd tendermint show-node-id
-```
-![获取本节点node-id](./images/ncoe-1.png) 
+- 重置数据
 
-多节点启动
-```
-emintd start --p2p.persistent_peers="f5088aa26cf82be7657977603d5a8f9f9cfae267@127.0.0.1:26606,ddb4df78fe5bdf120e8ba9468857765756948e18@127.0.0.1:26616,6bb7f6e1ef06ab114708e421ec84352f5f203e21@127.0.0.1:26626,13db9b7388f2192bd65ded3cdf1216ad7e17e6db@127.0.0.1:26636"
-```
+可以使用此命令来重置节点，包括本地区块链数据库，地址簿文件，并将priv_validator.json重置为创世状态。
 
-单节点启动（如果不需要历史查询可移除`--pruning=nothing`）
-```
-emintd start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
-```
-复制
+当本地区块链数据库以某种方式中断和无法同步或参与共识时，这是有用的。
 ```shell script
-cp -r /root/.emintd /home/testnode/000/
-cp -r /root/.emintcli /home/testnode/000/
+emintd unsafe-reset-all
 ```
 
-第一个节点配置文件生成
-```shell script
-emintd init node0 --chain-id 8 --home /home/ethermint/testnode/genesis_data/node0
-emintcli config chain-id 8 --home  /home/ethermint/testnode/genesis_data/emintcli
-emintcli config output json --home  /home/ethermint/testnode/genesis_data/emintcli
-emintcli config indent true --home /home/ethermint/testnode/genesis_data/emintcli
-emintcli config trust-node true --home /home/ethermint/testnode/genesis_data/emintcli
-emintcli config keyring-backend test --home  /home/ethermint/testnode/genesis_data/emintcli
-                                                                                 
-emintcli keys add bhptest0 --home  /home/ethermint/testnode/genesis_data/emintcli
+### 多节点搭建
 
-emintd add-genesis-account $(emintcli keys show bhptest0 -a --home /home/ethermint/testnode/genesis_data/emintcli) 1000000000000000000photon,1000000000000000000stake --home /home/ethermint/testnode/genesis_data/node0
-
-emintd gentx --name bhptest0 --keyring-backend test --home /home/ethermint/testnode/genesis_data/node0
-```
-如果出现这个错误
-```
-ERROR: failed to read from keybase: The specified item could not be found in the keyring
-```
-把/home/ethermint/testnode/genesis_data/emintcli目录复制到/root/.emintcli
-```
-cp -r /home/ethermint/testnode/genesis_data/emintcli/* /root/.emintcli/
-```
-```
-emintd collect-gentxs --home /home/ethermint/testnode/genesis_data/node0
-emintd validate-genesis --home /home/ethermint/testnode/genesis_data/node0
-emintd tendermint show-node-id --home /home/ethermint/testnode/genesis_data/node0
-```
-
-第二个节点
-```shell script
-emintcli config keyring-backend test --home  /home/ethermint/testnode/genesis_data/emintcli
-emintcli config chain-id 8 --home  /home/ethermint/testnode/genesis_data/emintcli
-emintcli config output json --home  /home/ethermint/testnode/genesis_data/emintcli
-emintcli config indent true --home /home/ethermint/testnode/genesis_data/emintcli
-emintcli config trust-node true --home /home/ethermint/testnode/genesis_data/emintcli
-
-emintd init node1 --chain-id 8 --home /home/ethermint/testnode/genesis_data/node1
-emintcli keys add bhptest1 --home  /home/ethermint/testnode/genesis_data/emintcli
-emintd add-genesis-account $(emintcli keys show bhptest1 -a --home  /home/ethermint/testnode/genesis_data/emintcli) 1000000000000000000photon,1000000000000000000stake --home /home/ethermint/testnode/genesis_data/node1
-emintd gentx --name bhptest1 --keyring-backend test --home /home/ethermint/testnode/genesis_data/node1
-emintd collect-gentxs --home /home/ethermint/testnode/genesis_data/node1
-emintd validate-genesis --home /home/ethermint/testnode/genesis_data/node1
-emintd tendermint show-node-id --home /home/ethermint/testnode/genesis_data/node1
-```
+多节点集群由4个节点组成。
 
 第一个节点
 ```
-rm -rf ~/.emint*
-./emintd init node0 --chain-id 8
-./emintcli config chain-id 8
-./emintcli config output json
-./emintcli config indent true
-./emintcli config trust-node true
-./emintcli config keyring-backend test
-./emintcli keys add bhptest0
+# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
+emintd init node0 --chain-id 2020
 
-./emintd add-genesis-account $(emintcli keys show bhptest0 -a) 1000000000000000000photon,1000000000000000000stake
-./emintd gentx --name bhptest0 --keyring-backend test
-./emintd collect-gentxs
-./emintd validate-genesis
-./emintd tendermint show-node-id
+# 客户端设置参数
+emintcli config chain-id 2020
+emintcli config output json
+emintcli config indent true
+emintcli config trust-node true
 
+# 测试环境可以执行下方命令，正式环境不用加
+emintcli config keyring-backend test
+
+# 创建一个钱包作为您的验证人帐户，钱包名为node0
+emintcli keys add node0
+
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
+# with the genesis.app_state.staking.params.bond_denom denom, the default is staking
+emintd add-genesis-account $(emintcli keys show node0 -a) 100000000000000000000000000photon,1000000000000000000stake
+
+# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
+# 测试环境可选：emintd gentx --name node0 --keyring-backend test
+emintd gentx --name node0
+
+# 将生成的质押交易添加到创世文件
+emintd collect-gentxs
+
+# 验证有效性
+emintd validate-genesis
+
+# 获取本节点node-id
+emintd tendermint show-node-id
 ```
 第二个节点
 ```
-rm -rf ~/.emint*
-./emintd init node1 --chain-id 8
-./emintcli config chain-id 8
-./emintcli config output json
-./emintcli config indent true
-./emintcli config trust-node true
-./emintcli config keyring-backend test
-./emintcli keys add bhptest1
+# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
+emintd init node0 --chain-id 2020
 
-./emintd add-genesis-account $(emintcli keys show bhptest1 -a) 1000000000000000000photon,1000000000000000000stake
-./emintd gentx --name bhptest1 --keyring-backend test
-./emintd collect-gentxs
-./emintd validate-genesis
-./emintd tendermint show-node-id
+# 客户端设置参数
+emintcli config chain-id 2020
+emintcli config output json
+emintcli config indent true
+emintcli config trust-node true
+
+# 测试环境可以执行下方命令，正式环境不用加
+emintcli config keyring-backend test
+
+# 创建一个钱包作为您的验证人帐户，钱包名为node1
+emintcli keys add node1
+
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
+# with the genesis.app_state.staking.params.bond_denom denom, the default is staking
+emintd add-genesis-account $(emintcli keys show node1 -a) 1000000000000000000photon,1000000000000000000stake
+
+# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
+# 测试环境可选：emintd gentx --name node1 --keyring-backend test
+emintd gentx --name node1
+
+# 将生成的质押交易添加到创世文件
+emintd collect-gentxs
+
+# 验证有效性
+emintd validate-genesis
+
+# 获取本节点node-id
+emintd tendermint show-node-id
 ```
 第三个节点
 ```
-rm -rf ~/.emint*
-./emintd init node2 --chain-id 8
-./emintcli config chain-id 8
-./emintcli config output json
-./emintcli config indent true
-./emintcli config trust-node true
-./emintcli config keyring-backend test
-./emintcli keys add bhptest2
+# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
+emintd init node0 --chain-id 2020
 
-./emintd add-genesis-account $(emintcli keys show bhptest2 -a) 1000000000000000000photon,1000000000000000000stake
-./emintd gentx --name bhptest2 --keyring-backend test
-./emintd collect-gentxs
-./emintd validate-genesis
-./emintd tendermint show-node-id
+# 客户端设置参数
+emintcli config chain-id 2020
+emintcli config output json
+emintcli config indent true
+emintcli config trust-node true
+
+# 测试环境可以执行下方命令，正式环境不用加
+emintcli config keyring-backend test
+
+# 创建一个钱包作为您的验证人帐户，钱包名为node2
+emintcli keys add node2
+
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
+# with the genesis.app_state.staking.params.bond_denom denom, the default is staking
+emintd add-genesis-account $(emintcli keys show node2 -a) 1000000000000000000photon,1000000000000000000stake
+
+# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
+# 测试环境可选：emintd gentx --name node2 --keyring-backend test
+emintd gentx --name node2
+
+# 将生成的质押交易添加到创世文件
+emintd collect-gentxs
+
+# 验证有效性
+emintd validate-genesis
+
+# 获取本节点node-id
+emintd tendermint show-node-id
 ```
 第四个节点
-```shell script
-rm -rf ~/.emint*
-./emintd init node3 --chain-id 8
-./emintcli config chain-id 8
-./emintcli config output json
-./emintcli config indent true
-./emintcli config trust-node true
-./emintcli config keyring-backend test
-./emintcli keys add bhptest3
-
-./emintd add-genesis-account $(emintcli keys show bhptest3 -a) 1000000000000000000photon,1000000000000000000stake
-./emintd gentx --name bhptest3 --keyring-backend test
-./emintd collect-gentxs
-./emintd validate-genesis
-./emintd tendermint show-node-id
-
-nohup ./emintd start --home genesis_data/node1 --rpc.laddr tcp://0.0.0.0:26657 > eth001.log &
-nohup ./emintd start --home genesis_data/node0 --rpc.laddr tcp://0.0.0.0:26657 > eth000.log &
-tail -f eth000.log
-
-./emintd start --p2p.persistent_peers="a683a213e0b9ad3e6a6ae0c2e82822bc2a850cff@101.133.151.154:26556,af8d443e2b35f0cb0b9201c10d2ce66fec8caf4f@101.133.151.154:26666" --rpc.laddr tcp://0.0.0.0:26657 --home genesis_data/node0
-
-./emintd start --p2p.persistent_peers="a683a213e0b9ad3e6a6ae0c2e82822bc2a850cff@101.133.151.154:26556,af8d443e2b35f0cb0b9201c10d2ce66fec8caf4f@101.133.151.154:26666" --rpc.laddr tcp://0.0.0.0:26667 --home genesis_data/node1
 ```
+# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
+emintd init node0 --chain-id 2020
+
+# 客户端设置参数
+emintcli config chain-id 2020
+emintcli config output json
+emintcli config indent true
+emintcli config trust-node true
+
+# 测试环境可以执行下方命令，正式环境不用加
+emintcli config keyring-backend test
+
+# 创建一个钱包作为您的验证人帐户，钱包名为node3
+emintcli keys add node3
+
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
+# with the genesis.app_state.staking.params.bond_denom denom, the default is staking
+emintd add-genesis-account $(emintcli keys show node3 -a) 1000000000000000000photon,1000000000000000000stake
+
+# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
+# 测试环境可选：emintd gentx --name node3 --keyring-backend test
+emintd gentx --name node3
+
+# 将生成的质押交易添加到创世文件
+emintd collect-gentxs
+
+# 验证有效性
+emintd validate-genesis
+
+# 获取本节点node-id
+emintd tendermint show-node-id
+```
+
+
+
+
+### 常见错误
+1. 提示`auth failure: secret conn failed`
+> [2020-06-29|16:58:17.712] dialing failed (attempts: 5): auth failure: secret conn failed: EOF module=pex addr=40c58f3a25f6037c12812a1daf4245f3a0c04993@47.103.97.77:26656
+>
+> [2020-06-29|16:58:24.805] Stopping peer for error                      module=p2p peer="Peer{MConn{101.133.225.179:26656} 257160684f00b95e52e8c603ee0f4446eaa3ed10 out}" err=EOF
+
+可能是code_hash错误
+
+![提示`auth failure: secret conn failed`](./images/ncoe-2.png) 
+
+2. 提示`failed to execute message; message index: 0: failed to delegate; 0stake is smaller than 100000000stake: insufficient funds`
+
+下图的中的balance没有添加对应地址段落
+
+![提示`failed to delegate`](./images/ncoe-3.png) 
