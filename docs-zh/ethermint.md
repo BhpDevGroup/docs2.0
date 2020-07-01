@@ -173,5 +173,5 @@ make test-cli
 ```
 ### 节点集群
 
-[节点集群部署](./node-cluster-of-ethermint.md)
+[Ethermint部署多节点](./node-cluster-of-ethermint.md)
 
