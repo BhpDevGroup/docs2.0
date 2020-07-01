@@ -5,42 +5,7 @@
 第一个节点：
 ```
 # 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
-emintd init node0 --chain-id 2020
-
-# 客户端设置参数
-emintcli config chain-id 2020
-emintcli config output json
-emintcli config indent true
-emintcli config trust-node true
-
-# 测试环境可以执行下方命令，正式环境不用加
-emintcli config keyring-backend test
-
-# 创建一个钱包作为您的验证人帐户，钱包名为node0
-emintcli keys add node0
-
-# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
-# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
-# with the genesis.app_state.staking.params.bond_denom denom, the default is staking
-emintd add-genesis-account $(emintcli keys show node0 -a) 100000000000000000000000000photon,100000000000000000000000000stake
-
-# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
-# 测试环境可选：emintd gentx --name node0 --keyring-backend test
-emintd gentx --name node0
-
-# 将生成的质押交易添加到创世文件
-emintd collect-gentxs
-
-# 验证有效性
-emintd validate-genesis
-
-# 获取本节点node-id
-emintd tendermint show-node-id
-```
-第二个节点：
-```
-# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
-emintd init node0 --chain-id 2020
+emintd init node1 --chain-id 2020
 
 # 客户端设置参数
 emintcli config chain-id 2020
@@ -60,7 +25,7 @@ emintcli keys add node1
 emintd add-genesis-account $(emintcli keys show node1 -a) 100000000000000000000000000photon,100000000000000000000000000stake
 
 # 生成创建验证人的交易，gentx存储在~/.emintd/config/中
-# 测试环境可选：emintd gentx --name node1 --keyring-backend test
+# 测试环境可选：emintd gentx --name node0 --keyring-backend test
 emintd gentx --name node1
 
 # 将生成的质押交易添加到创世文件
@@ -72,10 +37,10 @@ emintd validate-genesis
 # 获取本节点node-id
 emintd tendermint show-node-id
 ```
-第三个节点：
+第二个节点：
 ```
 # 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
-emintd init node0 --chain-id 2020
+emintd init node2 --chain-id 2020
 
 # 客户端设置参数
 emintcli config chain-id 2020
@@ -83,10 +48,9 @@ emintcli config output json
 emintcli config indent true
 emintcli config trust-node true
 
-# 测试环境可以执行下方命令，正式环境不用加
-emintcli config keyring-backend test
+# 测试环境可以执行下方命令，正式环境不用加：emintcli config keyring-backend test
 
-# 创建一个钱包作为您的验证人帐户，钱包名为node2
+# 创建一个钱包作为您的验证人帐户，钱包名为node1
 emintcli keys add node2
 
 # 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
@@ -107,10 +71,10 @@ emintd validate-genesis
 # 获取本节点node-id
 emintd tendermint show-node-id
 ```
-第四个节点：
+第三个节点：
 ```
 # 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
-emintd init node0 --chain-id 2020
+emintd init node3 --chain-id 2020
 
 # 客户端设置参数
 emintcli config chain-id 2020
@@ -118,10 +82,9 @@ emintcli config output json
 emintcli config indent true
 emintcli config trust-node true
 
-# 测试环境可以执行下方命令，正式环境不用加
-emintcli config keyring-backend test
+# 测试环境可选，正式环境不用加：emintcli config keyring-backend test
 
-# 创建一个钱包作为您的验证人帐户，钱包名为node3
+# 创建一个钱包作为您的验证人帐户，钱包名为node2
 emintcli keys add node3
 
 # 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
@@ -132,6 +95,40 @@ emintd add-genesis-account $(emintcli keys show node3 -a) 1000000000000000000000
 # 生成创建验证人的交易，gentx存储在~/.emintd/config/中
 # 测试环境可选：emintd gentx --name node3 --keyring-backend test
 emintd gentx --name node3
+
+# 将生成的质押交易添加到创世文件
+emintd collect-gentxs
+
+# 验证有效性
+emintd validate-genesis
+
+# 获取本节点node-id
+emintd tendermint show-node-id
+```
+第四个节点：
+```
+# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
+emintd init node4 --chain-id 2020
+
+# 客户端设置参数
+emintcli config chain-id 2020
+emintcli config output json
+emintcli config indent true
+emintcli config trust-node true
+
+# 测试环境可选：emintcli config keyring-backend test
+
+# 创建一个钱包作为您的验证人帐户，钱包名为node3
+emintcli keys add node4
+
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
+# with the genesis.app_state.staking.params.bond_denom denom, the default is staking
+emintd add-genesis-account $(emintcli keys show node4 -a) 100000000000000000000000000photon,100000000000000000000000000stake
+
+# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
+# 测试环境可选：emintd gentx --name node3 --keyring-backend test
+emintd gentx --name node4
 
 # 将生成的质押交易添加到创世文件
 emintd collect-gentxs
@@ -212,7 +209,7 @@ moniker = "node0"
         }
       ]
 ```
-- genesis.auth.accounts 添加其他三个验证人属性（把其他节点`genesis.json`文件中的accounts初始账户信息集合中的账户属性复制粘贴到这里）
+- genesis.auth.accounts 添加其他三个初始账户信息属性（把其他节点`genesis.json`文件中的accounts初始账户信息集合中的账户属性复制粘贴到这里）
 ```shell script
 "accounts": [
     {
@@ -438,23 +435,18 @@ tail -f init.log
 
 ### 启动Ethermint Web3 RPC API
 接口访问可分为内网访问和公网访问，可以按照安全、性能自行设置
-- 内网访问
-```shell script
-nohup emintcli rest-server --laddr "tcp://localhost:8545" > server.log &
-tail -f server.log
-```
 - 公网访问
 ```shell script
 nohup emintcli rest-server --laddr "tcp://0.0.0.0:8545" > server.log &
 tail -f server.log
 ```
+- 内网访问
+```shell script
+nohup emintcli rest-server --laddr "tcp://localhost:8545" > server.log &
+tail -f server.log
+```
 
 ### 导出ETH私钥
-- 正式环境
-```shell script
-emintcli keys unsafe-export-eth-key node1
-```
-- 测试环境可选
 ```shell script
 emintcli keys unsafe-export-eth-key node1
 ```
