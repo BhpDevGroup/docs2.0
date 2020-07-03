@@ -1,4 +1,4 @@
-## 一、Ethermint多节点搭建
+### 一、Ethermint多节点搭建
 > 前提
 >
 > 安装[ethermint](ethermint.md)
@@ -436,7 +436,7 @@ nohup emintd start > init.log &
 tail -f init.log
 ```
 
-### 启动Ethermint Web3 RPC API
+#### 启动Ethermint Web3 RPC API
 接口访问可分为内网访问和公网访问，可以按照安全、性能自行设置
 - 公网访问
 ```shell script
@@ -449,12 +449,12 @@ nohup emintcli rest-server --laddr "tcp://localhost:8545" > server.log &
 tail -f server.log
 ```
 
-### 导出ETH私钥
+#### 导出ETH私钥
 ```shell script
 emintcli keys unsafe-export-eth-key node1
 ```
 
-## 二、运行全节点
+### 二、运行全节点
 ```shell script
 # 初始化节点
 # 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
@@ -468,7 +468,7 @@ emintd init node5 --chain-id 2020
 # 启动节点（也可使用 nohup 或 systemd 等方式后台运行）
 emintd start
 ```
-## 三、升级成为验证人节点
+### 三、升级成为验证人节点
 ```shell script
 # 创建一个新的密钥（钱包），或通过助记词/密钥库导入已有密钥。执行该命令后输入并确认密码，将生成一个新的密钥。密码至少8个字符。
 # eg:emintcli keys add node5
