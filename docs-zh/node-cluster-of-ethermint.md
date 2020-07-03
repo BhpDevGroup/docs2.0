@@ -1,7 +1,7 @@
 ## Ethermint多节点搭建
 > 前提
 >
-> 安装ethermint
+> 安装[ethermint](ethermint.md)
 
 多节点集群由4个节点组成。
 #### 生成四个节点配置
