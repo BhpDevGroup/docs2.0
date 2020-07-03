@@ -1,4 +1,4 @@
-## Ethermint多节点搭建
+## 一、Ethermint多节点搭建
 > 前提
 >
 > 安装[ethermint](ethermint.md)
@@ -454,7 +454,7 @@ tail -f server.log
 emintcli keys unsafe-export-eth-key node1
 ```
 
-## 运行全节点
+## 二、运行全节点
 ```shell script
 # 初始化节点
 # 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
@@ -466,7 +466,6 @@ emintd init <moniker> --chain-id 2020
 # 启动节点（也可使用 nohup 或 systemd 等方式后台运行）
 emintd start
 ```
-2. 复制验证人节点
 
 ### 常用命令
 - 删除数据
