@@ -167,39 +167,22 @@ gaiacli keys list --home ./build/node0/gaiacli
 ```
 
 ### 三、普通节点加入自己部署的测试网络
-1. 获取上一步中四个验证人节点node-id和对应的P2P端口（先保存到临时文件）
+
 ```shell script
-gaiad tendermint  show-node-id --home ./build/nodeN/gaiad
-```
-2. 下载`./build/nodeN/gaiad`目录中任意一个节点的`config.toml`和`genesis.json`到本地
-> 主要目的是修改`config.toml`和`genesis.json`以供普通节点使用
-- 找到`config.toml`文件中的`persistent_peers`,按照自己测试网络的四个验证人节点node-id和对应的P2P端口修改成类似以下内容
-```shell script
-persistent_peers = "6b765eacccacac40a5e2f63961da73cf1f5ee2a5@127.0.0.1:26656,3c928896e21580925c96f9833b4b63c8cc2dbd78@127.0.0.1:26659,5dee586a8b70ee18935cbb9f4aa2176bd31211e6@127.0.0.1:26661,9ab7b59fc5be3827576cbd4741dc546bff8695d3@127.0.0.1:26663"
-```
-- 找到`config.toml`文件中的`moniker`修改成类似以下内容
-```shell script
-# A custom human readable name for this node
-moniker = "bhphub"
-```
-- 找到`genesis.json`文件中的`chain_id`（下一步初始化使用）
-```shell script
-  "chain_id": "chain-G7L8cJ",
-```
-3. 初始化节点
-```shell script
+# 初始化节点
 gaiad init <your_custom_moniker> --chain-id=chain-G7L8cJ
-gaiad start
-```
-4. 将步骤2中的`config.toml`和`genesis.json`替换步骤3中的对应文件，默认路径是`~/.gaiad/config/`目录下
-5. 启动gaia节点
-```shell script
+
+将上述多节点测试网络中验证人节点中的`config.toml`和`genesis.json`替换默认路径是`~/.gaiad/config/`目录下的对应文件
+
+#启动节点
 gaiad start
 ```
 >提示
 >
 >您可能会看到一些连接错误，这没关系，P2P网络正在尝试查找可用的连接
 > 可以添加几个社区公开节点到config.toml中的persistent_peers。
+
+
 ### 四、普通节点升级为验证人节点
 请参阅[验证人节点指南](gaia-validator.md )。
 
