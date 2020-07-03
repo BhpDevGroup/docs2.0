@@ -1,4 +1,7 @@
 ## Ethermint多节点搭建
+> 前提
+>
+> 安装ethermint
 
 多节点集群由4个节点组成。
 #### 生成四个节点配置
@@ -451,6 +454,20 @@ tail -f server.log
 emintcli keys unsafe-export-eth-key node1
 ```
 
+## 运行全节点
+```shell script
+# 初始化节点
+# 初始化genesis.json 文件：设置网络别名和chain-id(生成`.emintd`目录，初始化配置文件`config`和数据`data`)
+emintd init <moniker> --chain-id 2020
+
+# 下载多节点测试网络任意一个节点的 config.toml 和 genesis.json
+# 替换当前`~/.emintd/config`目录下的`config.toml`文件和`genesis.json`文件
+
+# 启动节点（也可使用 nohup 或 systemd 等方式后台运行）
+emintd start
+```
+2. 复制验证人节点
+
 ### 常用命令
 - 删除数据
 
@@ -465,6 +482,10 @@ rm -rf ~/.emint*
 当本地区块链数据库以某种方式中断和无法同步或参与共识时，这是有用的。
 ```shell script
 emintd unsafe-reset-all
+```
+- 查看网络状态信息
+```shell script
+ netstat -nptl
 ```
 
 ### 常见错误
