@@ -21,7 +21,10 @@ nohup ./init.sh > init.log &
 
 首先创建用于签署创始交易的密钥：(代码中的mykey替换成自己定义的字段,比如换成：bhptest2)
 ```
+# 初始化genesis.json 文件
 emintd init mymoniker --chain-id 8
+
+# 客户端设置参数
 emintcli config chain-id 8
 emintcli config output json
 emintcli config indent true
@@ -29,15 +32,23 @@ emintcli config trust-node true
 
 emintcli config keyring-backend test
 
-emintcli keys add bhptest2
-emintd add-genesis-account $(emintcli keys show bhptest2 -a) 1000000000000000000photon,1000000000000000000stake
+# 创建一个钱包作为您的验证人帐户，钱包名为node0(可以自定义设置)
+emintcli keys add node0
+
+# 将该钱包地址添加到genesis文件中的genesis.app_state.accounts数组中
+# 注意: 此命令使您可以设置通证数量。确保此帐户有币，这是测试网络上唯一的质押通证
+emintd add-genesis-account $(emintcli keys show node0 -a) 1000000000000000000photon,1000000000000000000stake
+
+# 生成创建验证人的交易，gentx存储在~/.emintd/config/中
 emintd gentx --name bhptest2 --keyring-backend test
 
-# Collect genesis tx
+# 将生成的质押交易添加到创世文件
 emintd collect-gentxs
 
+# 验证有效性
 emintd validate-genesis
 
+# 获取本节点node-id
 emintd start --pruning=nothing
 ```
 
@@ -65,34 +76,9 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id
 4. 访问ip:8545可以看到对应swagger-ui.html
 ![img](./images/ethermint-swagger.png) 
 
-#### 重置区块数据
+#### 常用命令
 
-emintd 和emintcli运行之后的数据默认存储在`/.emintd` 和 `/.emintcli`，如果打算重置数据，执行下方代码
-
-```
-rm -rf ~/.emint*
-```
-
-![img](./images/ethermint-rm-emint.png) 
-
-#### 导出ETH私钥
-
-1. 导出私钥
-
-```
-emintcli keys unsafe-export-eth-key mykey
-```
-2. 通过账户导入私钥并且校验以太坊地址是否正确
-```
-emintcli keys parse $(emintcli keys show mykey -a)
-```
-返回结果
-```
-{
- "human": "cosmos",
- "bytes": "40922CB497DAB308DFF3DBF1BA4C9857D444C747"
-}
-```
+[Ethermint常用命令使用指南](./emintcli-cmd.md )
 
 #### 测试
 

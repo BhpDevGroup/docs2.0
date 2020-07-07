@@ -18,9 +18,10 @@ echo "export GOPATH=/root/goApps" >> ~/.profile
 echo "export PATH=\$PATH:\$GOPATH/bin" >> ~/.profile
 source ~/.profile
 ```
-设置go代理
+设置go模块代理
 ```
-export GOPROXY=https://goproxy.io
+echo "export GOPROXY=https://goproxy.cn" >> ~/.profile
+source ~/.profile
 ```
 ### 安装make
 ```
@@ -38,12 +39,10 @@ git version
 下载源码，可选择github或者码云gitee下载。
 github：
 ```
-https://github.com/chainsafe/ethermint
 git clone https://github.com/chainsafe/ethermint.git
 ```
 gitee：
 ```
-https://gitee.com/holechain/ethermint/
 git clone https://gitee.com/holechain/ethermint.git
 ```
 查看项目代码是否是在`development`分支。
@@ -56,7 +55,7 @@ git checkout development
 ```
 ### 编译
 在 `ethermint`目录下安装
->请确保您的服务器可以访问 google.com，因为我们的项目依赖于google提供的某些库（如果您无法访问google.com，也可以尝试添加代理：export GOPROXY=https://goproxy.io）
+>请确保您的服务器可以访问 google.com，因为我们的项目依赖于google提供的某些库（如果您无法访问google.com，也可以尝试添加代理：export GOPROXY=https://goproxy.cn）
 ```
 make install
 ```

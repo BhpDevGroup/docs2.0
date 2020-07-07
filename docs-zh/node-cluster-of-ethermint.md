@@ -16,8 +16,7 @@ emintcli config output json
 emintcli config indent true
 emintcli config trust-node true
 
-# 测试环境可以执行下方命令，正式环境不用加
-emintcli config keyring-backend test
+# 测试环境可以执行下方命令，正式环境不用加 emintcli config keyring-backend test
 
 # 创建一个钱包作为您的验证人帐户，钱包名为node1
 emintcli keys add node1
@@ -724,24 +723,7 @@ emintcli query staking validators
 ]
 ```
 ### 常用命令
-- 删除数据
-
-此命令会删除守护程序`.emintd`和客户端`.emintcli`目录
-```
-rm -rf ~/.emint*
-```
-- 重置数据
-
-可以使用此命令来重置节点，包括本地区块链数据库，地址簿文件，并将priv_validator.json重置为创世状态。
-
-当本地区块链数据库以某种方式中断和无法同步或参与共识时，这是有用的。
-```shell script
-emintd unsafe-reset-all
-```
-- 查看网络状态信息
-```shell script
- netstat -nptl
-```
+[Ethermint常用命令使用指南](./emintcli-cmd.md )
 
 ### 常见错误
 1. 提示`auth failure: secret conn failed`
